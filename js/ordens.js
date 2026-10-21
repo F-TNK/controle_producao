@@ -49,18 +49,51 @@ const createOp = (op) => {
   titulo.textContent = "OP-" + op.numero + " · " + op.produto; // 2. preenche
   item.append(titulo); // 3. monta o card
   lista.append(item); // 4. coloca na página
-  return;
+  return item;
 };
 
 const desenhar = () => {
   lista.textContent = "";
+  aguardando = 0;
+  concluido = 0;
+  producao = 0;
+
   ordens.forEach((op) => {
-    lista.append(criarOP(op));
+    lista.append(createOp(op));
+    if (op.status === "aguardando") {
+      aguardando++;
+    } else if (op.status === "concluida") {
+      concluido++;
+    } else if (op.status === "producao") {
+      producao++;
+    }
+
+    const texto =
+      ordens.length +
+      " ordens no painel\n" +
+      "Aguardando: " +
+      aguardando +
+      " - Em produção: " +
+      producao +
+      " - Concluido: " +
+      concluido;
+
+    resumo.textContent = texto;
   });
 };
 
+ordens.forEach((i) => {
+  if (i.status === "aguardando") {
+    aguardando++;
+  } else if (i.status === "concluida") {
+    concluido++;
+  } else if (i.status === "producao") {
+    producao++;
+  }
+});
+
 const texto =
-  ops.length +
+  ordens.length +
   " ordens no painel\n" +
   "Aguardando: " +
   aguardando +
@@ -71,12 +104,15 @@ const texto =
 
 resumo.textContent = texto;
 
-botaoTv.addEventListener("click", () => {
-  const body = document.querySelector("body");
-  body.classList.toggle("modo-tv");
-  botaoTv.textContent = body.classList.contains("modo-tv")
-    ? "sair do modo TV"
-    : "Modo TV";
-});
+ordens.length +
+  " ordens no painel\n" +
+  "Aguardando: " +
+  botaoTv.addEventListener("click", () => {
+    const body = document.querySelector("body");
+    body.classList.toggle("modo-tv");
+    botaoTv.textContent = body.classList.contains("modo-tv")
+      ? "sair do modo TV"
+      : "Modo TV";
+  });
 
 desenhar();
