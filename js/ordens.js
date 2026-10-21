@@ -5,6 +5,8 @@ let aguardando = 0,
   concluido = 0,
   producao = 0;
 
+let filtro = "todas";
+
 let ordens = [
   {
     numero: 101,
@@ -81,28 +83,6 @@ const desenhar = () => {
     resumo.textContent = texto;
   });
 };
-
-ordens.forEach((i) => {
-  if (i.status === "aguardando") {
-    aguardando++;
-  } else if (i.status === "concluida") {
-    concluido++;
-  } else if (i.status === "producao") {
-    producao++;
-  }
-});
-
-const texto =
-  ordens.length +
-  " ordens no painel\n" +
-  "Aguardando: " +
-  aguardando +
-  " - Em produção: " +
-  producao +
-  " - Concluido: " +
-  concluido;
-
-resumo.textContent = texto;
 
 ordens.length +
   " ordens no painel\n" +
