@@ -1,11 +1,13 @@
-const ops = document.querySelectorAll(".op");
 const resumo = document.querySelector("#resumo");
 const botaoTv = document.querySelector("#modo-tv");
+const formOp = document.querySelector("#form-op");
+
 let aguardando = 0,
   concluido = 0,
   producao = 0;
 
-let filtro = "todas";
+const botoes = document.querySelectorAll(".filtro");
+let filtros = "todas";
 
 let ordens = [
   {
@@ -44,6 +46,14 @@ const NOMES = {
   concluida: "Concluída",
 };
 
+botaoTv.addEventListener("click", () => {
+  const body = document.querySelector("body");
+  body.classList.toggle("modo-tv");
+  botaoTv.textContent = body.classList.contains("modo-tv")
+    ? "sair do modo TV"
+    : "Modo TV";
+});
+
 const createOp = (op) => {
   const item = document.createElement("li"); // 1. cria (fora da tela)
   item.classList.add("op", "status-" + op.status);
@@ -54,13 +64,30 @@ const createOp = (op) => {
   return item;
 };
 
-const desenhar = () => {
+botoes.forEach((btn) => {
+  btn.addEventListener("click", (event) => {
+    filtros = event.target.dataset.filtro;
+    botoes.forEach((b) => b.classList.remove("selecionado"));
+    btn.classList.add("selecionado");
+    console.log("aqui " + filtros);
+    desenhar();
+  });
+});
+
+function desenhar() {
   lista.textContent = "";
   aguardando = 0;
   concluido = 0;
   producao = 0;
 
-  ordens.forEach((op) => {
+  ordensSelecionadas =
+    filtros === "todas"
+      ? ordens
+      : ordens.filter((ordem) => ordem.status === filtros);
+
+  console.log(ordensSelecionadas);
+
+  ordensSelecionadas.forEach((op) => {
     lista.append(createOp(op));
     if (op.status === "aguardando") {
       aguardando++;
@@ -82,17 +109,31 @@ const desenhar = () => {
 
     resumo.textContent = texto;
   });
-};
+}
 
-ordens.length +
-  " ordens no painel\n" +
-  "Aguardando: " +
-  botaoTv.addEventListener("click", () => {
-    const body = document.querySelector("body");
-    body.classList.toggle("modo-tv");
-    botaoTv.textContent = body.classList.contains("modo-tv")
-      ? "sair do modo TV"
-      : "Modo TV";
-  });
+formOp.addEventListener("submit", (event) => {
+  event.preventDefault();
+  const produto = document.querySelector("#produto").value.trim();
+  const qnt = Number(document.querySelector("#quantidade").value);
+  const maquina = document.querySelector("#maquina");
+  const mensagem = document.querySelector("#mensagem");
+
+  if (produto === "" || qnt <= 0) {
+    const texto = "Informe o produto e uma quantidade maior que zero";
+    mensagem.hidden = false;
+    mensagem.textContent = texto;
+  } else {
+    mensagem.hidden = true;
+    mensagem.textContent = "";
+    ordens.push({
+      numero: ordens[ordens.length - 1].numero + 1,
+      produto,
+      quantidade: qnt,
+      status: "aguardando",
+      maquina: maquina.value,
+    });
+    desenhar();
+  }
+});
 
 desenhar();

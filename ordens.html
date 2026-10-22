@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -13,31 +13,32 @@
       <button id="modo-tv">Modo TV</button>
       <p id="resumo" class="resultado"></p>
 
-      <button class="filtro" data-filtro="todas">Todas</button>
-      <button class="filtro" data-filtro="aguardando">Aguardando</button>
-      <button class="filtro" data-filtro="producao">Em produção</button>
-      <button class="filtro" data-filtro="Concluida">Concluídas</button>
+      <form id="form-op">
+        <label for="produto">Produto:</label>
+        <input type="text" name="produto" id="produto" />
 
-      <ul id="lista" class="lista-ops">
-        <!--
-        <li class="op" data-status="aguardando">
-          <h3>OP-101 · Eixo de transmissão</h3>
-          <p>200 peças · Torno CNC · Aguardando</p>
-        </li>
-        <li class="op" data-status="producao">
-          <h3>OP-102 · Suporte de motor</h3>
-          <p>500 peças · Prensa · Em produção</p>
-        </li>
-        <li class="op" data-status="concluida">
-          <h3>OP-103 · Tampa plástica</h3>
-          <p>1200 peças · Injetora · Concluída</p>
-        </li>
-        <li class="op" data-status="aguardando">
-          <h3>OP-104 · Flange de aço</h3>
-          <p>80 peças · Torno CNC · Aguardando</p>
-        </li>
-        -->
-      </ul>
+        <label for="quantidade">Quantidade:</label>
+        <input type="number" name="quantidade" id="quantidade" min="1" />
+
+        <label for="maquina">Máquina:</label>
+        <select name="maquina" id="maquina">
+          <option value="cnc">Torno CNC</option>
+          <option value="prensa">Prensa</option>
+          <option value="injetora">Injetora</option>
+          <option value="solda">Solda</option>
+        </select>
+        <button type="submit">Abrir OP</button>
+        <p id="mensagem" class="erro" hidden></p>
+      </form>
+
+      <div class="container">
+        <button class="filtro" data-filtro="todas">Todas</button>
+        <button class="filtro" data-filtro="aguardando">Aguardando</button>
+        <button class="filtro" data-filtro="producao">Em produção</button>
+        <button class="filtro" data-filtro="concluida">Concluídas</button>
+      </div>
+
+      <ul id="lista" class="lista-ops"></ul>
     </main>
     <script src="js/ordens.js"></script>
   </body>
