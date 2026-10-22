@@ -61,6 +61,18 @@ const createOp = (op) => {
   titulo.textContent = "OP-" + op.numero + " · " + op.produto; // 2. preenche
   item.append(titulo); // 3. monta o card
   lista.append(item); // 4. coloca na página
+
+  if (op.status !== "concluida") {
+    const avancar = document.createElement("button");
+
+    if (op.status === "producao") {
+      avancar.textContent = "Iniciar produção";
+    } else {
+      avancar.textContent = "Concluir";
+    }
+  }
+
+  avancar.addEventListener("click", (event) => {});
   return item;
 };
 
@@ -137,3 +149,7 @@ formOp.addEventListener("submit", (event) => {
 });
 
 desenhar();
+
+/* <img src="x" onerror="alert('invadido')"> com innerHTML:
+      Adiciona um produto com uma imagem "vazia" e gera uma mensagem de erro no terminal do navegador
+*/
