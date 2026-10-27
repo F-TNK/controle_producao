@@ -2,6 +2,9 @@ const resumo = document.querySelector("#resumo");
 const botaoTv = document.querySelector("#modo-tv");
 const formOp = document.querySelector("#form-op");
 
+const busca = document.querySelector("#busca");
+const vazia = document.querySelector("#vazia");
+
 let aguardando = 0,
   concluido = 0,
   producao = 0;
@@ -65,14 +68,37 @@ const createOp = (op) => {
   if (op.status !== "concluida") {
     const avancar = document.createElement("button");
 
-    if (op.status === "producao") {
+    if (op.status === "aguardando") {
       avancar.textContent = "Iniciar produção";
     } else {
       avancar.textContent = "Concluir";
     }
+
+    avancar.addEventListener("click", (event) => {
+      if (op.status === "aguardando") {
+        op.status = "producao";
+      } else {
+        op.status = "concluida";
+      }
+      desenhar();
+    });
+    item.append(avancar);
   }
 
-  avancar.addEventListener("click", (event) => {});
+  if (op.status === "aguardando") {
+    const cancelar = document.createElement("button");
+    cancelar.textContent = "Cancelar";
+
+    cancelar.addEventListener("click", () => {
+      if (confirm("Cancelar a OP-" + op.numero + "?")) {
+        ordens = ordens.filter((o) => o !== op); // fica com todas, menos esta
+        desenhar();
+      }
+    });
+
+    item.append(cancelar);
+  }
+
   return item;
 };
 
@@ -81,13 +107,11 @@ botoes.forEach((btn) => {
     filtros = event.target.dataset.filtro;
     botoes.forEach((b) => b.classList.remove("selecionado"));
     btn.classList.add("selecionado");
-    console.log("aqui " + filtros);
     desenhar();
   });
 });
 
 function desenhar() {
-  lista.textContent = "";
   aguardando = 0;
   concluido = 0;
   producao = 0;
@@ -96,8 +120,6 @@ function desenhar() {
     filtros === "todas"
       ? ordens
       : ordens.filter((ordem) => ordem.status === filtros);
-
-  console.log(ordensSelecionadas);
 
   ordensSelecionadas.forEach((op) => {
     lista.append(createOp(op));
@@ -109,18 +131,32 @@ function desenhar() {
       producao++;
     }
 
-    const texto =
-      ordens.length +
-      " ordens no painel\n" +
-      "Aguardando: " +
-      aguardando +
-      " - Em produção: " +
-      producao +
-      " - Concluido: " +
-      concluido;
-
-    resumo.textContent = texto;
+    let visiveis = ordens;
+    if (filtros !== "todas") {
+      visiveis = ordens.filter((op) => op.status === filtros);
+    }
+    const textoBusca = busca.value.trim().toLowerCase();
+    visiveis = visiveis.filter((op) =>
+      op.produto.toLowerCase().includes(textoBusca)
+    );
+    lista.textContent = "";
+    visiveis.forEach((op) => {
+      lista.append(createOp(op));
+    });
+    vazia.hidden = visiveis.length > 0;
+    atualizarResumo(visiveis.length);
   });
+  const texto =
+    ordens.length +
+    " ordens no painel\n" +
+    "Aguardando: " +
+    aguardando +
+    " - Em produção: " +
+    producao +
+    " - Concluido: " +
+    concluido;
+
+  resumo.textContent = texto;
 }
 
 formOp.addEventListener("submit", (event) => {
@@ -147,6 +183,8 @@ formOp.addEventListener("submit", (event) => {
     desenhar();
   }
 });
+
+busca.addEventListener("input", desenhar);
 
 desenhar();
 
