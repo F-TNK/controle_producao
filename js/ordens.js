@@ -146,17 +146,30 @@ function desenhar() {
     vazia.hidden = visiveis.length > 0;
     atualizarResumo(visiveis.length);
   });
-  const texto =
+}
+
+function atualizarResumo() {
+  aguardando = 0;
+  producao = 0;
+  concluido = 0;
+  ordens.forEach((op) => {
+    if (op.status === "aguardando") {
+      aguardando++;
+    } else if (op.status === "concluida") {
+      concluido++;
+    } else if (op.status === "producao") {
+      producao++;
+    }
+  });
+  resumo.textContent =
     ordens.length +
     " ordens no painel\n" +
     "Aguardando: " +
     aguardando +
-    " - Em produção: " +
+    " · Em produção: " +
     producao +
-    " - Concluido: " +
+    " · Concluídas: " +
     concluido;
-
-  resumo.textContent = texto;
 }
 
 formOp.addEventListener("submit", (event) => {
