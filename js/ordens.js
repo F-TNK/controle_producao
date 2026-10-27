@@ -61,7 +61,8 @@ const createOp = (op) => {
   const item = document.createElement("li"); // 1. cria (fora da tela)
   item.classList.add("op", "status-" + op.status);
   const titulo = document.createElement("h3");
-  titulo.textContent = "OP-" + op.numero + " · " + op.produto; // 2. preenche
+  titulo.textContent =
+    "OP-" + op.numero + " · " + op.produto + "\nQuantidade: " + op.quantidade; // 2. preenche
   item.append(titulo); // 3. monta o card
   lista.append(item); // 4. coloca na página
 
@@ -174,12 +175,12 @@ function atualizarResumo() {
 
 formOp.addEventListener("submit", (event) => {
   event.preventDefault();
-  const produto = document.querySelector("#produto").value.trim();
+  const produto = document.querySelector("#produto");
   const qnt = Number(document.querySelector("#quantidade").value);
   const maquina = document.querySelector("#maquina");
   const mensagem = document.querySelector("#mensagem");
 
-  if (produto === "" || qnt <= 0) {
+  if (produto.value.trim() === "" || qnt <= 0) {
     const texto = "Informe o produto e uma quantidade maior que zero";
     mensagem.hidden = false;
     mensagem.textContent = texto;
@@ -188,11 +189,15 @@ formOp.addEventListener("submit", (event) => {
     mensagem.textContent = "";
     ordens.push({
       numero: ordens[ordens.length - 1].numero + 1,
-      produto,
+      produto: produto.value.trim(),
       quantidade: qnt,
       status: "aguardando",
       maquina: maquina.value,
     });
+
+    mensagem.hidden = true; // esconde o erro, se estava aparecendo
+    formOp.reset(); // limpa os campos
+    produto.focus();
     desenhar();
   }
 });

@@ -111,6 +111,7 @@ button:focus-visible {
 .lista-ops {
   list-style: none;
   padding: 0;
+  white-space: pre-line; /* aula 8: o \n vira quebra de linha */
 }
 .op {
   margin-top: 1rem;
