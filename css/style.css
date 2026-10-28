@@ -5,11 +5,12 @@
 :root {
   --cor-fundo: #0c1a6b;
   --cor-fundo2: #3174b3;
-  --cor-texto: #c8cbce;
-  --cor-destaque: #14ad87;
-  /*--cor-destaque: #e07a2e;*/
+  --cor-texto: #c3d3e2;
+  /*--cor-destaque: #14ad87;*/
+  --cor-destaque: #c76e2a;
   --cor-borda: #d9ddd3;
-  --cor-suave: #f4f5ef;
+  --cor-suave: #1f1e1e;
+  --cor-suave2: #353434;
 }
 
 /* ===== 2. Base ===== */
@@ -54,10 +55,13 @@ select {
   font-size: 1rem;
   border: 1px solid var(--cor-borda);
   border-radius: 6px;
+  background-color: #252424;
+  color: var(--cor-texto);
 }
 
 button {
   margin-top: 1.25rem;
+  margin-right: 0.25rem;
   padding: 0.7rem 1.5rem;
   font-size: 1rem;
   color: var(--cor-fundo);
@@ -87,12 +91,13 @@ button:focus-visible {
   padding: 1rem;
   border-radius: 8px;
   border-left: 6px solid var(--cor-texto);
-  background: var(--cor-suave);
+  /*background: var(--cor-suave);*/
+  background: linear-gradient(to bottom, var(--cor-suave), var(--cor-suave2));
   white-space: pre-line; /* aula 8: o \n vira quebra de linha */
 }
 
 .ok {
-  border-color: #2e7d32;
+  border-color: #308d34;
   background: #e8f5e9;
 }
 .alerta {
